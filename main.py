@@ -1,8 +1,9 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 
 from Model.Product import Product
 
+from db import insertCSV
 from db import clientPS
 from db import productDB
 
@@ -43,11 +44,18 @@ def updateProduct(id:int):
 
 @app.delete("/product/{id}")
 def deleteProduct(id:int):
-    conn= clientPS.dbClient()
-    return {"masseage":f"consulta producte {id}"}
+    clientPS.dbClient()
+    data=productDB.deleteProduct(id)
+    return data
 
 
 @app.get("/productAll")
-def allProducts(id:int):
-    conn= clientPS.dbClient()
-    return {"masseage":f"consulta producte {id}"}
+def allProducts():
+    clientPS.dbClient()
+    data= productDB.allProducts()
+    return data
+
+@app.post("/uploadfile/")
+async def create_upload_file(file: UploadFile):
+    data= insertCSV.load(file)
+    return data
