@@ -36,11 +36,11 @@ def createProduct(prod: Product):
     return data
 
 
-@app.put("/product/"
-         "/product/{id}")
-def updateProduct(id:int):
-    conn= clientPS.dbClient()
-    return {"masseage":f"consulta producte {id}"}
+@app.put("/product/{id}")
+def updateProduct(id:int, prod:Product):
+    clientPS.dbClient()
+    data=productDB.updateProduct(id, prod)
+    return data
 
 @app.delete("/product/{id}")
 def deleteProduct(id:int):
